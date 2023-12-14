@@ -1,0 +1,27 @@
+#senddiv {
+    margin: auto;
+    padding: 70px 0;
+    width: 30vw;
+    height: 10vw;
+
+    font-family: Arial, Helvetica, sans-serif;
+    color:white;
+    text-align: center;
+    font-size: 5vw;
+    
+    position: absolute;
+    
+    background-color: rgb(235, 78, 78);
+
+    /* float: right; */
+}
+
+#senddiv:hover {
+    background-color: rgb(167, 52, 52);
+}
+
+html, body { height: 100%; width: 100%; margin: 0; }
+
+/* #sendbutton {
+    text-align: center;
+} */

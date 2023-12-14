@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Data Sharer</title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+</head>
+<body onload="loaddrop()">
+    <!-- <label>
+        Choose File
+        <input id="sendinput"type="file" style="position: fixed; top: -100%">
+        <button id="sendbutton" onclick="sendfile()">Send</button>
+    </label> -->
+    <form ref='uploadForm'
+        id="uploadForm"
+        action="/send"
+        method="post"
+        encType="multipart/form-data">
+        <div id="senddiv">
+            <label id="sendlabel">
+                Choose Files
+                <input id="sendinput" type="file" name="downloadfile" style="position: fixed; top: -100%">
+            </label>
+            
+        </div>
+        <br/>
+        <input id="sendbutton" type="submit" value="Upload"/>
+    </form>
+    <br/>
+    <select id="filesdrop">
+
+    </select>
+    <!-- <label>
+        <input type="submit" action="/get" value="GET"/>
+    </label> -->
+    <button id="getfilebut" onclick="getfile()">Get</button>
+
+    <script>
+        async function loaddrop() {
+            var drop = document.getElementById("filesdrop")
+            var filesj = await fetch("/getfiles")
+            var files = await filesj.json()
+            console.log(files)
+            files.forEach(file => {
+                var newelem = document.createElement("option")
+                newelem.value = file;
+                newelem.innerText = file;
+                drop.appendChild(newelem)
+            });
+        }
+
+        var saveBlob = (function () {
+            var a = document.createElement("a");
+            document.body.appendChild(a);
+            a.style = "display: none";
+            return function (blob, fileName) {
+                var url = window.URL.createObjectURL(blob);
+                a.href = url;
+                a.download = fileName;
+                a.click();
+                window.URL.revokeObjectURL(url);
+            };
+        }());
+
+        async function getfile() {
+            var drop = document.getElementById("filesdrop").value;
+            var file = await fetch("/getfile", {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({name: drop})
+            });
+            var f = await file.blob();
+            saveBlob(f, drop)
+            console.log(f);
+            console.log(typeof file)
+        }
+    </script>
+</body>
+</html>
